@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionCollection version="2" name="Scripts">
+    <Actions category="Scripts">
+        <text>SDZ</text>
+
+        <Action name="find_selection">
+        <icon></icon>
+        <text>Find Selection</text>
+        <whatsThis>Find Selection.</whatsThis>
+        <toolTip>Find Selection.</toolTip>
+        <iconText>Find Selection</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+
+        <Action name="trim_canvas">
+        <icon></icon>
+        <text>Trim Canvas</text>
+        <whatsThis>Trim Canvas.</whatsThis>
+        <toolTip>Trim Canvas.</toolTip>
+        <iconText>Trim Canvas</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+
+        <Action name="sdz_512x512">
+        <icon></icon>
+        <text>Create 512x512</text>
+        <whatsThis>Create Square 512x512.</whatsThis>
+        <toolTip>Create Square 512x512.</toolTip>
+        <iconText>Create 512x512</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+
+        <Action name="sdz_512x768">
+        <icon></icon>
+        <text>Create 512x768</text>
+        <whatsThis>Create Rectangle 512x768.</whatsThis>
+        <toolTip>Create Rectangle 512x768.</toolTip>
+        <iconText>Create 512x768</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+
+        <Action name="sdz_768x512">
+        <icon></icon>
+        <text>Create 768x512</text>
+        <whatsThis>Create Rectangle 768x512.</whatsThis>
+        <toolTip>Create Rectangle 768x512.</toolTip>
+        <iconText>Create 768x512</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+        
+        <Action name="sdz_paste_and_align">
+        <icon></icon>
+        <text>Paste and Align</text>
+        <whatsThis>Paste the copied content, align it, and adjust to selection.</whatsThis>
+        <toolTip>Paste the copied content, align it, and adjust to selection.</toolTip>
+        <iconText>Paste and Align</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+        
+        <Action name="sdz_create_fill_layer">
+        <icon></icon>
+        <text>Create Fill Layer from Selection</text>
+        <whatsThis>Create a fill layer based on the current selection.</whatsThis>
+        <toolTip>Create a fill layer based on the current selection.</toolTip>
+        <iconText>Create Fill Layer</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+        
+        <Action name="sdz_align_image">
+        <icon></icon>
+        <text>Align Image</text>
+        <whatsThis>Align the image to the top-left and adjust to tempselection.</whatsThis>
+        <toolTip>Align the image to the top-left and adjust to tempselection.</toolTip>
+        <iconText>Align Image</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+    </Actions>
+</ActionCollection>
