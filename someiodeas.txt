@@ -1,0 +1,455 @@
+from krita import *
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QMessageBox
+
+def create_512x768_vector():
+    krita = Krita.instance()
+    doc = krita.activeDocument()
+
+    if not doc:
+        QMessageBox.warning(None, "Error", "No hay un documento activo.")
+        return
+
+    # Crear una capa vectorial
+    vector_layer = doc.createVectorLayer("512x768_vector")
+    if not vector_layer:
+        QMessageBox.warning(None, "Error", "No se pudo crear la capa vectorial.")
+        return
+
+    # Definir el color cian en formato hexadecimal
+    fill_color = "#00EFFA"  # Color cian (0, 239, 250)
+
+    # Crear una forma rectangular con el color especificado
+    svg_content = f'<svg><rect x="0" y="0" width="512" height="768" fill="{fill_color}" /></svg>'
+    vector_layer.addShapesFromSvg(svg_content)
+
+    # Establecer la opacidad (127 de 255 es aproximadamente 50%)
+    vector_layer.setOpacity(127)
+
+    # Añadir la capa al documento
+    doc.rootNode().addChildNode(vector_layer, None)
+
+    # Actualizar la vista
+    doc.refreshProjection()
+
+    # Activar la capa creada
+    doc.setActiveNode(vector_layer)
+
+
+    # Imprimir información adicional
+    print(f"Nombre de la capa: {vector_layer.name()}")
+    print(f"Tipo de capa: {vector_layer.type()}")
+    bounds = vector_layer.bounds()
+    print(f"Bounds: x={bounds.x()}, y={bounds.y()}, width={bounds.width()}, height={bounds.height()}")
+
+# Ejecutar la función
+create_512x768_vector()
+
+
+
+
+
+
+
+
+
+ 
+
+--------------------------------v3
+
+from krita import Krita
+
+# Obtener instancia de Krita
+app = Krita.instance()
+
+# Crear un nuevo documento de 100x100 píxeles
+new_doc = app.createDocument(100, 100, "New Document", "RGBA", "U8", "", 100.0)
+app.activeWindow().addView(new_doc)
+app.setActiveDocument(new_doc)
+
+# Ejecutar el comando de pegar
+app.action('edit_paste').trigger()
+
+# Buscar la capa llamada "Background" y eliminarla
+background_layer = new_doc.nodeByName("Background")
+if background_layer:
+    new_doc.rootNode().removeChildNode(background_layer)
+
+# Renombrar la única capa restante a 'imagepaste'
+layers = new_doc.rootNode().childNodes()
+if len(layers) == 1:
+    layers[0].setName("imagepaste")
+
+
+# Obtener las dimensiones de la capa 'imagepaste'
+imagepaste_node = new_doc.nodeByName('imagepaste')
+
+if not imagepaste_node:
+    print("No se encontró la capa 'imagepaste'")
+else:
+    # Obtener los límites de la capa 'imagepaste'
+    imagepaste_bounds = imagepaste_node.bounds()
+    x_imagepaste, y_imagepaste, w_imagepaste, h_imagepaste = imagepaste_bounds.x(), imagepaste_bounds.y(), imagepaste_bounds.width(), imagepaste_bounds.height()
+
+    if w_imagepaste == 0 or h_imagepaste == 0:
+        print("La capa 'imagepaste' no tiene un contenido visible.")
+    else:
+        print(f"Tamaño de la capa 'imagepaste': {w_imagepaste}x{h_imagepaste}, posición: ({x_imagepaste}, {y_imagepaste})")
+
+print("Documento creado, la imagen ha sido pegada, la capa 'Background' eliminada, y la capa restante renombrada a 'imagepaste'.")
+
+
+
+--------------------v4
+
+from krita import Krita
+
+# Obtener instancia de Krita
+app = Krita.instance()
+
+# Crear un nuevo documento de 100x100 píxeles
+new_doc = app.createDocument(100, 100, "New Document", "RGBA", "U8", "", 100.0)
+app.activeWindow().addView(new_doc)
+app.setActiveDocument(new_doc)
+
+# Ejecutar el comando de pegar
+app.action('edit_paste').trigger()
+
+# Buscar la capa llamada "Background" y eliminarla
+background_layer = new_doc.nodeByName("Background")
+if background_layer:
+    new_doc.rootNode().removeChildNode(background_layer)
+
+# Renombrar la única capa restante a 'imagepaste'
+layers = new_doc.rootNode().childNodes()
+if len(layers) == 1:
+    layers[0].setName("imagepaste")
+
+# Obtener las dimensiones de la capa 'imagepaste'
+imagepaste_node = new_doc.nodeByName('imagepaste')
+if not imagepaste_node:
+    print("No se encontró la capa 'imagepaste'")
+else:
+    # Obtener los límites de la capa 'imagepaste'
+    imagepaste_bounds = imagepaste_node.bounds()
+    x_imagepaste, y_imagepaste, w_imagepaste, h_imagepaste = imagepaste_bounds.x(), imagepaste_bounds.y(), imagepaste_bounds.width(), imagepaste_bounds.height()
+    if w_imagepaste == 0 or h_imagepaste == 0:
+        print("La capa 'imagepaste' no tiene un contenido visible.")
+    else:
+        print(f"Tamaño de la capa 'imagepaste': {w_imagepaste}x{h_imagepaste}, posición: ({x_imagepaste}, {y_imagepaste})")
+        
+        # Redimensionar el documento al tamaño de la capa 'imagepaste'
+        new_doc.resizeImage(0, 0, w_imagepaste, h_imagepaste)
+        print(f"Documento redimensionado a {w_imagepaste}x{h_imagepaste} píxeles.")
+
+print("Documento creado, la imagen ha sido pegada, la capa 'Background' eliminada, la capa restante renombrada a 'imagepaste', y el documento redimensionado.")
+
+
+
+---------------------- trim layer 
+
+from krita import (
+    Krita,
+    QRect,
+    Extension
+)
+
+def _get_active_layer_bounds():
+    instance = Krita.instance()
+    document = instance.activeDocument()
+    
+    if not document:
+        return (False, None, 'No hay documento activo.')
+    
+    active_layer = document.activeNode()
+    if not active_layer:
+        return (False, None, 'No hay capa activa.')
+    
+    bounds = active_layer.bounds()
+    return (True, bounds, '')
+
+def TrimToCurrentLayerFunction():
+    instance = Krita.instance()
+    document = instance.activeDocument()
+
+    (success, bounds, message) = _get_active_layer_bounds()
+    if not success:
+        return (False, message)
+
+    # Comprueba si ya está recortado
+    if all((
+        document.xOffset() == bounds.x(),
+        document.yOffset() == bounds.y(),
+        document.width() == bounds.width(),
+        document.height() == bounds.height(),
+    )):
+        return (False, 'El lienzo ya está recortado a la capa actual.')
+
+    # Recorta el documento a los límites de la capa activa
+    document.resizeImage(
+        bounds.x(),
+        bounds.y(),
+        bounds.width(),
+        bounds.height()
+    )
+
+    document.refreshProjection()
+    return (True, 'Lienzo recortado según la capa actual.')
+
+class TrimToLayerExtension(Extension):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+    def setup(self):
+        pass
+
+    def createActions(self, window):
+        action = window.createAction("trimToCurrentLayer", "Recortar según la capa actual")
+        action.triggered.connect(self.trimToLayer)
+
+    def trimToLayer(self):
+        success, message = TrimToCurrentLayerFunction()
+        if success:
+            Krita.instance().activeWindow().activeView().canvas().update()
+        print(message)
+
+# Instanciar y registrar la extensión
+Krita.instance().addExtension(TrimToLayerExtension(Krita.instance()))
+
+# Si el script se ejecuta directamente, llamar a la función de recorte
+if __name__ == '__main__':
+    print(TrimToCurrentLayerFunction()[1])
+
+
+------------------------ redimenzionar 
+
+from krita import *
+
+def resize_document():
+    # Obtener la instancia de Krita
+    krita_instance = Krita.instance()
+    
+    # Obtener el documento activo
+    doc = krita_instance.activeDocument()
+    
+    if doc is None:
+        print("No hay documento activo. Por favor, abre un documento primero.")
+        return
+    
+    # Obtener el tamaño actual del documento
+    current_width = doc.width()
+    current_height = doc.height()
+    
+    # Definir el nuevo tamaño
+    new_width = 512
+    new_height = 768
+    
+    # Calcular los offsets para centrar
+    x_offset = (current_width - new_width) // 2
+    y_offset = (current_height - new_height) // 2
+    
+    # Cambiar el tamaño del documento desde el centro
+    doc.resizeImage(x_offset, y_offset, new_width, new_height)
+    
+    print(f"Documento redimensionado a {new_width}x{new_height} píxeles desde el centro.")
+
+# Ejecutar la función
+resize_document()
+
+
+-------------------------13
+
+from krita import *
+from PyQt5.QtCore import QRect
+
+def adjust_tempfill_to_b():
+    # Obtener el documento activo
+    doc = Krita.instance().activeDocument()
+    
+    if doc is None:
+        print("No hay un documento activo")
+        return
+
+    # Obtener las capas
+    tempfill_layer = doc.nodeByName("tempfill")
+    b_layer = doc.nodeByName("b")
+    
+    if tempfill_layer is None or b_layer is None:
+        print("No se encontraron las capas 'tempfill' o 'b'")
+        return
+
+    # Obtener las dimensiones de ambas capas
+    b_bounds = b_layer.bounds()
+    tempfill_bounds = tempfill_layer.bounds()
+
+    # Imprimir las dimensiones actuales
+    print(f"Dimensiones de 'b': {b_bounds.width()}x{b_bounds.height()}")
+    print(f"Dimensiones de 'tempfill': {tempfill_bounds.width()}x{tempfill_bounds.height()}")
+
+    # Crear una nueva capa con las dimensiones de 'b'
+    new_layer = doc.createNode("tempfill_new", "paintlayer")
+    doc.rootNode().addChildNode(new_layer, tempfill_layer)
+
+    # Obtener los datos de píxeles de 'tempfill'
+    tempfill_data = tempfill_layer.pixelData(0,0, tempfill_bounds.width(), tempfill_bounds.height())
+
+    # Calcular factores de escala
+    scale_x = b_bounds.width() / tempfill_bounds.width()
+    scale_y = b_bounds.height() / tempfill_bounds.height()
+
+    # Copiar y escalar manualmente los píxeles a la nueva capa
+    for y in range(b_bounds.height()):
+        for x in range(b_bounds.width()):
+            src_x = int(x / scale_x)
+            src_y = int(y / scale_y)
+            if src_x < tempfill_bounds.width() and src_y < tempfill_bounds.height():
+                pixel_index = (src_y * tempfill_bounds.width() + src_x) * 4
+                pixel_data = tempfill_data[pixel_index:pixel_index+4]
+                new_layer.setPixelData(pixel_data, x, y, 1, 1)
+
+    # Mover la nueva capa a la posición de 'b'
+    new_layer.move(b_bounds.x(), b_bounds.y())
+
+    # Eliminar la capa 'tempfill' original
+    doc.rootNode().removeChildNode(tempfill_layer)
+
+    # Renombrar la nueva capa a "tempfill"
+    new_layer.setName("tempfill")
+
+    # Imprimir las nuevas dimensiones
+    new_tempfill_bounds = new_layer.bounds()
+    print(f"Nuevas dimensiones de 'tempfill': {new_tempfill_bounds.width()}x{new_tempfill_bounds.height()}")
+
+    # Actualizar el documento
+    doc.refreshProjection()
+
+# Ejecutar la función
+adjust_tempfill_to_b()
+
+
+
+------------------aling superior iz
+
+from krita import *
+
+def align_layer_top_left():
+    # Obtener la instancia de Krita
+    krita_instance = Krita.instance()
+    
+    # Obtener el documento activo
+    doc = krita_instance.activeDocument()
+    
+    if doc is None:
+        print("No hay un documento activo")
+        return
+    
+    # Obtener la capa activa
+    active_layer = doc.activeNode()
+    
+    if active_layer is None:
+        print("No hay una capa seleccionada")
+        return
+    
+    # Obtener los límites de la capa
+    layer_bounds = active_layer.bounds()
+    
+    # Obtener la posición actual de la capa
+    layer_pos = active_layer.position()
+    
+    # Calcular el desplazamiento necesario
+    # El desplazamiento es la diferencia entre la posición actual de la capa
+    # y la posición de sus límites
+    x_offset = layer_pos.x() - layer_bounds.x()
+    y_offset = layer_pos.y() - layer_bounds.y()
+    
+    # Mover la capa
+    # Movemos la capa por el desplazamiento calculado para alinear sus límites con (0,0)
+    active_layer.move(x_offset, y_offset)
+    
+    # Actualizar el documento
+    doc.refreshProjection()
+
+# Ejecutar la función
+align_layer_top_left()
+
+
+----------------- paste imagen tempimage
+
+from krita import *
+
+# Obtener la instancia de Krita
+app = Krita.instance()
+
+# Obtener el documento activo
+doc = app.activeDocument()
+
+if doc is None:
+    print("No hay un documento activo")
+else:
+    # Obtener la lista inicial de capas
+    initial_layers = doc.topLevelNodes()
+
+    # Ejecutar el comando de pegar
+    app.action('edit_paste').trigger()
+
+    # Esperar un momento para asegurarse de que la capa se ha creado
+    app.activeDocument().waitForDone()
+
+    # Obtener la nueva lista de capas
+    new_layers = doc.topLevelNodes()
+
+    # Encontrar la nueva capa
+    new_layer = None
+    for layer in new_layers:
+        if layer not in initial_layers:
+            new_layer = layer
+            break
+
+    if new_layer:
+        # Renombrar la nueva capa a "tempimage"
+        new_layer.setName("tempimage")
+        print("La capa pegada ha sido renombrada a 'tempimage'")
+    else:
+        print("No se pudo identificar la capa pegada")
+
+def align_layer_top_left():
+    # Obtener la instancia de Krita
+    krita_instance = Krita.instance()
+
+    # Obtener el documento activo
+    doc = krita_instance.activeDocument()
+
+    if doc is None:
+        print("No hay un documento activo")
+        return
+
+    # Intentar obtener la capa "tempimage"
+    active_layer = None
+    for layer in doc.topLevelNodes():
+        if layer.name() == "tempimage":
+            active_layer = layer
+            break
+
+    if active_layer is None:
+        print("No se encontró la capa 'tempimage'")
+        return
+
+    # Obtener los límites de la capa
+    layer_bounds = active_layer.bounds()
+
+    # Obtener la posición actual de la capa
+    layer_pos = active_layer.position()
+
+    # Calcular el desplazamiento necesario
+    x_offset = layer_pos.x() - layer_bounds.x()
+    y_offset = layer_pos.y() - layer_bounds.y()
+
+    # Mover la capa
+    active_layer.move(x_offset, y_offset)
+
+    # Actualizar el documento
+    doc.refreshProjection()
+
+# Ejecutar la función de alineación
+align_layer_top_left()
+
