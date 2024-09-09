@@ -24,7 +24,9 @@ class SDZPasteExtension(Extension):
         
             ("sdz_find_selection", "find_selection", self.find_selection),
             ("sdz_trim_canvas", "trim_canvas", self.trim_canvas),
+            ("sdz_512x512v", "512x512v", self.create_512x512v),
             ("sdz_512x512", "512x512", self.create_512x512),
+            ("sdz_512x768v", "512x768v", self.create_512x768v),
             ("sdz_512x768", "512x768", self.create_512x768),
             ("sdz_768x512", "768x512", self.create_768x512),
             ("sdz_paste_and_align", "Paste and Align", self.paste_and_align),
@@ -245,6 +247,29 @@ class SDZPasteExtension(Extension):
 
         doc.refreshProjection()
 
+    def create_512x512v(self):
+        krita = Krita.instance()
+        doc = krita.activeDocument()
+
+        if not doc:
+            QMessageBox.warning(None, "Error", "No hay un documento activo.")
+            return
+
+        vector_layer = doc.createVectorLayer("512x512v")
+        if not vector_layer:
+            QMessageBox.warning(None, "Error", "No se pudo crear la capa vectorial.")
+            return
+
+        fill_color = "#00EFFA"  
+        svg_content = f'<svg><rect x="0" y="0" width="512" height="512" fill="{fill_color}" /></svg>'
+        vector_layer.addShapesFromSvg(svg_content)
+
+        vector_layer.setOpacity(127)
+
+        doc.rootNode().addChildNode(vector_layer, None)
+        doc.refreshProjection()
+        doc.setActiveNode(vector_layer)
+
     def create_512x768(self):
         krita = Krita.instance()
         doc = krita.activeDocument()
@@ -267,6 +292,29 @@ class SDZPasteExtension(Extension):
         doc.setSelection(None)
 
         doc.refreshProjection()
+
+    def create_512x768v(self):
+        krita = Krita.instance()
+        doc = krita.activeDocument()
+
+        if not doc:
+            QMessageBox.warning(None, "Error", "No hay un documento activo.")
+            return
+
+        vector_layer = doc.createVectorLayer("512x768v")
+        if not vector_layer:
+            QMessageBox.warning(None, "Error", "No se pudo crear la capa vectorial.")
+            return
+
+        fill_color = "#00EFFA"  
+        svg_content = f'<svg><rect x="0" y="0" width="512" height="768" fill="{fill_color}" /></svg>'
+        vector_layer.addShapesFromSvg(svg_content)
+
+        vector_layer.setOpacity(127)
+
+        doc.rootNode().addChildNode(vector_layer, None)
+        doc.refreshProjection()
+        doc.setActiveNode(vector_layer)
 
     def create_768x512(self):
         krita = Krita.instance()

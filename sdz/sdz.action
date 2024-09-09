@@ -29,12 +29,38 @@
         <statusTip></statusTip>
         </Action>
 
+        <Action name="sdz_512x512v">
+        <icon></icon>
+        <text>Create 512x512v</text>
+        <whatsThis>Create Square 512x512v.</whatsThis>
+        <toolTip>Create Square 512x512v.</toolTip>
+        <iconText>Create 512x512v</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+
         <Action name="sdz_512x512">
         <icon></icon>
         <text>Create 512x512</text>
         <whatsThis>Create Square 512x512.</whatsThis>
         <toolTip>Create Square 512x512.</toolTip>
         <iconText>Create 512x512</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>none</shortcut>
+        <isCheckable>false</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+
+        <Action name="sdz_512x768v">
+        <icon></icon>
+        <text>Create 512x768v</text>
+        <whatsThis>Create Rectangle 512x768v.</whatsThis>
+        <toolTip>Create Rectangle 512x768v.</toolTip>
+        <iconText>Create 512x768v</iconText>
         <activationFlags>10000</activationFlags>
         <activationConditions>0</activationConditions>
         <shortcut>none</shortcut>
